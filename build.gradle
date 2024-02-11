@@ -1,0 +1,41 @@
+plugins {
+    id 'java'
+    id 'checkstyle'
+}
+
+group 'org.example'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-web:2.6.2'
+    implementation 'org.springframework.boot:spring-boot-starter:2.6.2'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test:2.6.2'
+    testImplementation 'org.mockito:mockito-core:3.12.4'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
+    testImplementation 'junit:junit:4.13.1'
+    testImplementation 'junit:junit:4.13.1'
+    testImplementation 'junit:junit:4.13.1'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
+
+    compileOnly 'org.projectlombok:lombok:1.18.22'
+
+    checkstyle("com.puppycrawl.tools:checkstyle:8.44")
+}
+
+checkstyle {
+    toolVersion = "8.44"
+    configFile = rootProject.file('config/checkstyle.xml')
+    properties['checkstyle.dtd.enabled'] = false
+}
+
+
+
+test {
+    useJUnitPlatform()
+}
+
+
