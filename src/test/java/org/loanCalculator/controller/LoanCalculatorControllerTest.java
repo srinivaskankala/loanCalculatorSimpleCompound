@@ -1,11 +1,14 @@
 package org.loanCalculator.controller;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.loanCalculator.service.SimpleLoanCalculatorServiceImpl;
 import org.loanCalculator.service.LoanLengthUnit;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.loanCalculator.service.provider.InterestRateProvider;
+import org.loanCalculator.service.provider.SimpleFixedInterestRateProvider;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -27,7 +30,9 @@ public class LoanCalculatorControllerTest {
 
     @MockBean
     private SimpleLoanCalculatorServiceImpl loanCalculatorServiceImpl;
-    private InterestRateProvider interestRateProvider;
+    @MockBean
+    private SimpleFixedInterestRateProvider interestRateProvider;
+
 
     @Test
     void calculateMonthlyRepayment_shouldReturnCorrectResponse() throws Exception {

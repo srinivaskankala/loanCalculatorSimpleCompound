@@ -12,10 +12,11 @@ import org.springframework.web.bind.annotation.*;
 //@RequestMapping("loan")
 public class LoanCalculatorController {
     private final SimpleLoanCalculatorServiceImpl loanCalculatorServiceImpl;
-    public InterestRateProvider interestRateProvider;
+    public InterestRateProvider simpleInterestRateProvider;
 
-    public LoanCalculatorController(SimpleLoanCalculatorServiceImpl loanCalculatorServiceImpl) {
+    public LoanCalculatorController(SimpleLoanCalculatorServiceImpl loanCalculatorServiceImpl, SimpleFixedInterestRateProvider simpleFixedInterestRateProvider) {
         this.loanCalculatorServiceImpl = loanCalculatorServiceImpl;
+        this.simpleInterestRateProvider = simpleFixedInterestRateProvider;
      }
 
     @GetMapping("/calculate-monthly-repayment")
@@ -32,11 +33,10 @@ public class LoanCalculatorController {
             throw new InvalidLoanCalculator( " loanLengthUnit must not be null");
         }
         try {
-            interestRateProvider = new SimpleFixedInterestRateProvider();
        double pricipalDouble = Double.parseDouble(principal);
        double loanLengthDouble = Double.parseDouble(loanLength);
        LoanLengthUnit loanLengthUnit1 = LoanLengthUnit.valueOf(loanLengthUnit);
-        return loanCalculatorServiceImpl.calculateMonthlyRepayment(pricipalDouble, loanLengthDouble, loanLengthUnit1, interestRateProvider);
+        return loanCalculatorServiceImpl.calculateMonthlyRepayment(pricipalDouble, loanLengthDouble, loanLengthUnit1, simpleInterestRateProvider);
     } catch (NumberFormatException e) {
           throw new InvalidLoanCalculator(principal + ",  " + loanLength
                   + "  :enter valid numbers for principal and loanLenght");
