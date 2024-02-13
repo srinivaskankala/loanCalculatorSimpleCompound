@@ -1,14 +1,10 @@
 package org.loanCalculator.controller;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.loanCalculator.service.SimpleLoanCalculatorServiceImpl;
 import org.loanCalculator.service.LoanLengthUnit;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.loanCalculator.service.provider.InterestRateProvider;
 import org.loanCalculator.service.provider.SimpleFixedInterestRateProvider;
-import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -29,7 +25,7 @@ public class LoanCalculatorControllerTest {
     private MockMvc mockMvc;
 
     @MockBean
-    private SimpleLoanCalculatorServiceImpl loanCalculatorServiceImpl;
+    private SimpleLoanCalculatorServiceImpl simpleLoanCalculatorServiceImpl;
     @MockBean
     private SimpleFixedInterestRateProvider interestRateProvider;
 
@@ -40,9 +36,9 @@ public class LoanCalculatorControllerTest {
         double loanLength = 12;
         LoanLengthUnit loanLengthUnit = LoanLengthUnit.MONTHS;
         double expectedMonthlyRepayment = 910.8333333333334;
-        when(loanCalculatorServiceImpl.calculateMonthlyRepayment(principal, loanLength, loanLengthUnit, interestRateProvider))
+        when(simpleLoanCalculatorServiceImpl.calculateMonthlyRepayment(principal, loanLength, loanLengthUnit, interestRateProvider))
                 .thenReturn(expectedMonthlyRepayment);
-        mockMvc.perform(MockMvcRequestBuilders.get("/calculate-monthly-repayment")
+        mockMvc.perform(MockMvcRequestBuilders.get("/loan/calculateMonthlyRepayment")
                         .param("principal", String.valueOf(principal))
                         .param("loanLength", String.valueOf(loanLength))
                         .param("loanLengthUnit", loanLengthUnit.name())
@@ -54,25 +50,25 @@ public class LoanCalculatorControllerTest {
 
     @Test
     void calculateMonthlyRepayment_shouldHandleInvalidParameters() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get("/calculate-monthly-repayment")
+        mockMvc.perform(MockMvcRequestBuilders.get("/loan/calculateMonthlyRepayment")
                         .param("loanLength", String.valueOf(12))
                         .param("loanLengthUnit", LoanLengthUnit.MONTHS.name())
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/calculate-monthly-repayment")
+        mockMvc.perform(MockMvcRequestBuilders.get("/loan/calculateMonthlyRepayment")
                         .param("principal", String.valueOf(10000))
                         .param("loanLengthUnit", LoanLengthUnit.MONTHS.name())
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/calculate-monthly-repayment")
+        mockMvc.perform(MockMvcRequestBuilders.get("/loan/calculateMonthlyRepayment")
                         .param("principal", String.valueOf(10000))
                         .param("loanLength", String.valueOf(12))
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/calculate-monthly-repayment")
+        mockMvc.perform(MockMvcRequestBuilders.get("/loan/calculateMonthlyRepayment")
                         .param("principal", String.valueOf(10000))
                         .param("loanLength", String.valueOf(12))
                         .param("loanLengthUnit", "INVALID_UNIT")

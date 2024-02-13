@@ -8,13 +8,6 @@ public enum LoanLengthUnit {
     MONTHS("MONTHS"),
     YEARS("YEARS");
 
-    private static final Map<String, LoanLengthUnit> loanLengthUnitMap = new HashMap<>();
-
-    static {
-        for (LoanLengthUnit l : values()) {
-            loanLengthUnitMap.put(l.name(), l);
-        }
-    }
 
     private final String text;
 

@@ -16,7 +16,7 @@ public class LoanCalculatorServiceTests {
 
     @Mock
     private InterestRateProvider interestRateProvider;
-    private SimpleLoanCalculatorService loanCalculatorService;
+    private LoanCalculatorService loanCalculatorService;
 
     @BeforeEach
     public void setUp() {
